@@ -1,0 +1,66 @@
+/* styles.css */
+/* Estilos para el menú lateral */
+
+body{
+  color: #2c3f51;
+}
+.sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+    padding: 48px 0 0;
+    box-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Estilos para los enlaces del menú */
+  .nav-link {
+    padding: 10px 20px;
+    color: #333;
+    transition: background-color 0.3s ease;
+  }
+  
+  .nav-link:hover {
+    background-color: #f0f0f0;
+    color: #000;
+  }
+  
+  
+  
+  /* Estilos para los encabezados de sección */
+  .sidebar-heading {
+    font-size: 0.9rem;
+    color: #555;
+    margin-top: 10px;
+    margin-bottom: 5px;
+  }
+
+  /* Estilos para el contenido de la página */
+  main {
+    padding-top: 60px; /* Ajuste para el menú lateral fijo en la parte superior */
+  }
+  
+  /* Color personalizado para botones */
+  .btn-primary {
+    background-color: #ff3366;
+    border-color: #ff3366;
+  }
+  
+  .btn-outline-primary {
+    color: #ff3366;
+    border-color: #ff3366;
+  }
+  
+  .btn-primary:hover {
+    background-color: #ff1a4d;
+    border-color: #ff1a4d;
+  }
+  
+  /* Color personalizado para algunos elementos y márgenes */
+  h2 {
+    color: #2c3f51;
+    margin-bottom: 20px;
+  }
+
+  

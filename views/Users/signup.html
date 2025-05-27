@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Tiendas</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js"></script>
+    <link rel="stylesheet" href="../../assets/css/signup.css">
+</head>
+<body>
+    <div class="container">
+        <h2 class="text-center">Registro de Tiendas</h2>
+        <div class="row">
+            <!-- Primera Columna - Formulario -->
+            <div class="col-md-6">
+                <form id="registroForm">
+                    <div class="form-group">
+                        <label for="nombre">Nombre de la Tienda:</label>
+                        <input type="text" class="form-control" id="nombre" name="nombre" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="tipoVendedor">Tipo de Vendedor:</label>
+                        <select class="form-control" id="tipoVendedor" name="tipoVendedor" required>
+                            <option value="1">Persona Natural</option>
+                            <option value="2">Tienda de Ropa</option>
+                            <option value="2">Tienda de Accesorios</option>
+                            <option value="2">Otros</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="telefono">Número de Contacto (WhatsApp):</label>
+                        <input type="text" class="form-control" id="telefono" name="telefono" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Ubicación:</label>
+                        <button type="button" class="btn btn-info btn-block" data-toggle="modal" data-target="#modalMapa">
+                            Seleccionar Ubicación
+                        </button>
+                        <input type="hidden" id="ubicacion" name="ubicacion">
+                        <!-- Previsualización de la ubicación -->
+                        <div id="ubicacionPreview" class="mt-2 text-muted"></div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Registrar</button>
+                </form>
+            </div>
+
+            <!-- Segunda Columna - Imagen -->
+            <div class="col-md-6">
+                <div class="image-preview" id="imagePreview">
+                    <span>Previsualización de imagen</span>
+                </div>
+                <br>
+                <input type="file" class="form-control" id="imageInput" accept="image/*">
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal con Mapa -->
+    <div class="modal fade" id="modalMapa" tabindex="-1" aria-labelledby="modalMapaLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Seleccionar Ubicación</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Input de búsqueda -->
+                    <input id="searchBox" class="form-control mb-2" type="text" placeholder="Buscar ubicación">
+                    <!-- Mapa -->
+                    <div id="map" style="width: 100%; height: 400px;"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" id="guardarUbicacion">Seleccionar Ubicación</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        let map;
+        let marker;
+        let geocoder;
+        let searchBox;
+
+        function initMap() {
+            const defaultLocation = { lat: 2.9446, lng: -76.6843 }; // Santander de Quilichao
+            map = new google.maps.Map(document.getElementById("map"), {
+                center: defaultLocation,
+                zoom: 15
+            });
+
+            marker = new google.maps.Marker({
+                position: defaultLocation,
+                map: map,
+                draggable: true
+            });
+
+            geocoder = new google.maps.Geocoder();
+
+            // Buscador en el mapa
+            searchBox = new google.maps.places.SearchBox(document.getElementById("searchBox"));
+            map.controls[google.maps.ControlPosition.TOP_LEFT].push(document.getElementById("searchBox"));
+
+            // Mover el mapa al seleccionar una sugerencia en el input
+            searchBox.addListener("places_changed", function () {
+                let places = searchBox.getPlaces();
+                if (places.length === 0) return;
+
+                let place = places[0];
+                if (!place.geometry) return;
+
+                map.setCenter(place.geometry.location);
+                map.setZoom(15);
+                marker.setPosition(place.geometry.location);
+            });
+
+            // Actualizar coordenadas al mover el marcador
+            google.maps.event.addListener(marker, "dragend", function () {
+                let position = marker.getPosition();
+                geocodeLatLng(position);
+            });
+
+            // Guardar ubicación seleccionada
+            document.getElementById("guardarUbicacion").addEventListener("click", function () {
+                let position = marker.getPosition();
+                geocodeLatLng(position, function (address) {
+                    document.getElementById("ubicacion").value = address;
+                    document.getElementById("ubicacionPreview").innerHTML = `<strong>Ubicación seleccionada:</strong> ${address}`;
+                    $('#modalMapa').modal('hide');
+                });
+            });
+        }
+
+        function geocodeLatLng(position, callback) {
+            geocoder.geocode({ location: position }, function (results, status) {
+                if (status === "OK" && results[0]) {
+                    let address = results[0].formatted_address;
+                    callback(address);
+                } else {
+                    callback("Ubicación no encontrada");
+                }
+            });
+        }
+    </script>
+
+    <!-- Scripts de Bootstrap y Google Maps -->
+     <script src="../../Api/vendedores.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBOXAJv7pglHLsFvlj0AxfqVn9rI9ZM1bw&libraries=places&callback=initMap"></script>
+</body>
+</html>

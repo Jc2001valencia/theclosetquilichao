@@ -1,0 +1,145 @@
+body {
+    color: #2c3f51;
+    overflow-x: hidden;
+}
+
+#logo{
+    width: auto;
+    height: 80px;
+    padding: 0%;
+}
+
+
+.btn-vender {
+  z-index: 1;
+    text-align: center;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    list-style: none;
+    text-decoration: none;
+    background-color: #ff3366;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+#verproducto{
+  background-color:   #ff3366;
+  border: none;
+}
+
+.btn-vender:hover {
+    background-color: #cc0044;
+}
+
+/* categoria */
+.categoria {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    min-height: 300px; /* Ajusta según sea necesario */
+    margin-bottom: 20px;
+}
+
+.categoria div {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.7); /* Fondo semi-transparente para mejorar la legibilidad del texto */
+    color: #fff;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    box-sizing: border-box;
+}
+
+.categoria h5 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+
+.cate {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Cambié a 3 columnas para un mejor ajuste en pantallas más grandes */
+    gap: 1rem; /* Espacio entre las categorías */
+}
+
+
+  
+  h1 {
+    text-align: center; /* Centrar el título */
+    margin-bottom: 20px; /* Espacio inferior para separar el título del contenido */
+  }
+  
+  .d-flex {
+    justify-content: center; /* Centrar los elementos flexibles horizontalmente */
+  }
+  
+  .tienda {
+    flex: 0 0 auto; /* Evitar que los elementos se expandan y mantengan su ancho */
+    margin: 10px; /* Espacio entre las tiendas */
+  }
+  
+  .tienda a img {
+    width: 150px;
+    max-width: 100%; /* Asegurarse de que las imágenes no excedan su contenedor */
+    height: auto; /* Mantener la proporción de la imagen */
+    display: block; /* Eliminar espacios innecesarios debajo de las imágenes */
+  }
+  /* Media Queries para pantallas más pequeñas */
+
+
+ 
+  
+  #contenedor{
+    padding: 5rem;
+    display: flex;
+  }
+  
+  
+
+  @media (max-width: 768px) {
+
+    body {
+        overflow-x: hidden;
+    }
+    .container {
+        padding: 10px; /* Reducción del padding en pantallas más pequeñas */
+    }
+
+    .btn-vender {
+        bottom: 3%; /* Ajuste del botón en pantallas más pequeñas */
+        right: 3%; /* Ajuste del botón en pantallas más pequeñas */
+        padding: 1rem 1.5rem; /* Ajuste del padding en pantallas más pequeñas */
+        font-size: 1rem; /* Ajuste del tamaño de fuente en pantallas más pequeñas */
+    }
+
+    .tienda a img {
+        max-width: 100px; /* Reducción del tamaño de las imágenes de las tiendas en pantallas más pequeñas */
+    }
+
+    #cat {
+        width: 130px; /* Reducción del ancho de las categorías en pantallas más pequeñas */
+        height: 200px; /* Reducción del alto de las categorías en pantallas más pequeñas */
+        margin-bottom: 0.5rem; /* Espacio entre las categorías para pantallas más pequeñas */
+    }
+
+    .cate {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr); /* Cambié a 3 columnas para un mejor ajuste en pantallas más grandes */
+      gap: 1rem; /* Espacio entre las categorías */
+  }
+
+
+}

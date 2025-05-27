@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Administrativo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body class="flex">
+    <!-- Menú Lateral -->
+    <aside class="w-64 bg-gray-900 h-screen text-white p-4">
+        <h2 class="text-xl font-bold mb-4">Admin Panel</h2>
+        <ul>
+            <li class="mb-2"><a href="admin_categoria.html" class="block py-2 px-4 hover:bg-gray-700">Categoría</a></li>
+            <li class="mb-2"><a href="admin_estado.html" class="block py-2 px-4 hover:bg-gray-700">Estado</a></li>
+            <li class="mb-2"><a href="admin_producto.html" class="block py-2 px-4 hover:bg-gray-700">Producto</a></li>
+            <li class="mb-2"><a href="admin_rol.html" class="block py-2 px-4 hover:bg-gray-700">Rol</a></li>
+            <li class="mb-2"><a href="admin_ubicacion.html" class="block py-2 px-4 hover:bg-gray-700">Ubicación</a></li>
+            <li class="mb-2"><a href="admin_usuario.html" class="block py-2 px-4 hover:bg-gray-700">Usuarios</a></li>
+            <li class="mb-2"><a href="admin_vendedor.html" class="block py-2 px-4 hover:bg-gray-700">Vendedores</a></li>
+        </ul>
+        <button onclick="mostrarModalCerrar()" class="mt-4 bg-red-600 w-full text-white py-2 rounded">Cerrar Sesión</button>
+    </aside>
+
+    <!-- Contenido Principal -->
+    <main class="flex-1 p-6 bg-gray-100">
+        <h1 class="text-2xl font-bold mb-4">Gestión de Usuarios</h1>
+        <div class="bg-white p-4 shadow rounded-lg">
+            <button onclick="exportarPDF()" class="mb-4 bg-red-500 text-white px-4 py-2 rounded">Exportar a PDF</button>
+            <button onclick="mostrarModalUsuario()" class="mb-4 bg-green-500 text-white px-4 py-2 rounded">Agregar Usuario</button>
+            <table class="w-full border-collapse border border-gray-300">
+                <thead>
+                    <tr class="bg-gray-200">
+                        <th class="border p-2">ID Usuario</th>
+                        <th class="border p-2">Email</th>
+                        <th class="border p-2">Password</th>
+                        <th class="border p-2">ID Rol</th>
+                        <th class="border p-2">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="border p-2">1</td>
+                        <td class="border p-2">juan@example.com</td>
+                        <td class="border p-2">********</td>
+                        <td class="border p-2">2</td>
+                        <td class="border p-2">
+                            <button onclick="editarUsuario(1)" class="bg-blue-500 text-white px-3 py-1 rounded">Editar</button>
+                            <button class="bg-red-500 text-white px-3 py-1 rounded">Eliminar</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <!-- Modal Agregar/Editar Usuario -->
+    <div id="modalUsuario" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center">
+        <div class="bg-white p-6 rounded shadow-lg w-1/3">
+            <h2 class="text-xl font-bold mb-4">Agregar/Editar Usuario</h2>
+            <input type="email" id="email" placeholder="Email" class="w-full mb-2 p-2 border rounded">
+            <input type="password" id="password" placeholder="Password" class="w-full mb-2 p-2 border rounded">
+            <select id="id_rol" class="w-full mb-2 p-2 border rounded">
+                <option value="1">Administrador</option>
+                <option value="2">Usuario</option>
+            </select>
+            <div class="flex justify-end">
+                <button onclick="cerrarModalUsuario()" class="bg-gray-500 text-white px-4 py-2 rounded mr-2">Cancelar</button>
+                <button class="bg-green-500 text-white px-4 py-2 rounded">Guardar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Cerrar Sesión -->
+    <div id="modalCerrarSesion" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center">
+        <div class="bg-white p-6 rounded shadow-lg w-1/3">
+            <h2 class="text-xl font-bold mb-4">¿Seguro que deseas cerrar sesión?</h2>
+            <div class="flex justify-end">
+                <button onclick="cerrarModalCerrar()" class="bg-gray-500 text-white px-4 py-2 rounded mr-2">Cancelar</button>
+                <button class="bg-red-600 text-white px-4 py-2 rounded">Cerrar Sesión</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function exportarPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            doc.text("Reporte de Usuarios", 10, 10);
+            doc.save("usuarios.pdf");
+        }
+
+        function mostrarModalUsuario() {
+            document.getElementById("modalUsuario").classList.remove("hidden");
+        }
+
+        function cerrarModalUsuario() {
+            document.getElementById("modalUsuario").classList.add("hidden");
+        }
+
+        function mostrarModalCerrar() {
+            document.getElementById("modalCerrarSesion").classList.remove("hidden");
+        }
+
+        function cerrarModalCerrar() {
+            document.getElementById("modalCerrarSesion").classList.add("hidden");
+        }
+    </script>
+</body>
+</html>

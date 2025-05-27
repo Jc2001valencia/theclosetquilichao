@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Panel de Administración - Gestión de Productos</title>
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+  <link rel="stylesheet" href="../../assets/css/admin_tiendas.css">
+</head>
+
+<body>
+
+  <!-- Menú Lateral -->
+  <div class="container-fluid">
+    <div class="row">
+      <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+        <!-- Aquí coloca tu menú lateral, por ejemplo, links a diferentes secciones -->
+        <div class="sidebar-sticky">
+          <img src="../../assets/img/logo.png" alt="" style="width: 100%;">
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a class="nav-link active" href="gestion_productos.html">Gestión de Productos</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="gestion_tienda.html">Gestión de la tienda</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" data-bs-toggle="modal" data-bs-target="#exampleModalcerrar" href="#">Cerrar
+                sesion</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+
+      <!-- Modal de Cerrar Sesión -->
+      <div class="modal fade" id="exampleModalcerrar" tabindex="-1" aria-labelledby="exampleModalcerrar"
+        aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">¿Cerrar sesión?</h5>
+            </div>
+            <div class="modal-body">
+              <p>¿Estás seguro de que deseas cerrar sesión?</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+              <button id="confirmLogout" class="btn btn-primary">Cerrar sesión</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+      <!-- Contenido de la Página -->
+      <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+        <!-- Sección de Gestión de Productos -->
+        <div
+          class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+          <h1 class="h2">Gestión de Productos</h1>
+        </div>
+
+        <!-- Botón para agregar un nuevo producto -->
+        <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
+          Nuevo Producto
+        </button>
+
+        <!-- Buscador de Productos -->
+<div class="d-flex justify-content-end">
+  <form class="mb-4" style="width: 500px; padding:1rem;">
+    <div class="input-group">
+      <input 
+        type="text" 
+        id="input-buscar" 
+        class="form-control" 
+        placeholder="Buscar producto..." 
+        aria-label="Buscar producto" 
+        aria-describedby="button-buscar"
+      >
+      <button 
+        style="margin-left: 0.5rem;" 
+        class="btn btn-outline-secondary" 
+        type="button" 
+        id="button-buscar"
+      >
+        Buscar
+      </button>
+    </div>
+  </form>
+</div>
+
+
+
+        <!-- Sección para mostrar los productos con tarjetas (cards) -->
+        <div class="row" id="contenedor-productos" style="padding: 2rem;"></div>
+
+        <!-- Fin del ejemplo de tarjeta para un producto -->
+        <!-- Ejemplo de tarjeta para un producto -->
+
+        <!-- Aquí puedes agregar más tarjetas de productos dinámicamente -->
+    </div>
+
+
+    </main>
+
+    <!-- Fin del ejemplo de tarjeta para un producto -->
+
+  </div>
+
+
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg"> <!-- Más ancho -->
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Nuevo Producto</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">X</button>
+        </div>
+
+        <div class="modal-body">
+          <form id="formProducto" enctype="multipart/form-data">
+            <div class="row">
+
+              <!-- 🖼 Columna Izquierda: Imágenes -->
+              <div class="col-md-6">
+                <h5>Imágenes</h5>
+                <div class="form-group mb-3">
+                  <label for="imagenesProducto">Subir Imágenes (máx. 3):</label>
+                  <input type="file" class="form-control" id="imagenesProducto" name="imagenes[]" accept="image/*"
+                    multiple required>
+                </div>
+                <div id="previewContainer" class="d-flex flex-wrap gap-2 border p-2 rounded">
+                  <!-- Aquí se mostrarán las vistas previas -->
+                </div>
+              </div>
+
+              <!-- ✏️ Columna Derecha: Información del Producto -->
+              <div class="col-md-6">
+                <h5>Información</h5>
+                <div class="form-group mb-3">
+                  <label for="nombreProducto">Nombre:</label>
+                  <input type="text" class="form-control" id="nombreProducto" name="nombre" required>
+                </div>
+
+                <div class="form-group mb-3">
+                  <label for="descripcionProducto">Descripción:</label>
+                  <textarea class="form-control" id="descripcionProducto" name="descripcion" rows="3"
+                    required></textarea>
+                </div>
+
+                <div class="form-group mb-3">
+                  <label for="precioProducto">Precio:</label>
+                  <input type="number" class="form-control" id="precioProducto" name="precio" required>
+                </div>
+
+                <!-- 🗂 Subformulario: Categorías -->
+                <div class="form-group mb-3">
+                  <label>Categorías (máx. 3):</label>
+                  <div id="checkboxCategorias" class="d-flex flex-wrap gap-2">
+                    <div class="form-check">
+                      <input class="form-check-input categoria-checkbox" type="checkbox" value="Moda deportiva" id="cat1" name="categorias[]">
+                      <label class="form-check-label" for="cat1">Moda deportiva</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input categoria-checkbox" type="checkbox" value="Moda sport" id="cat2" name="categorias[]">
+                      <label class="form-check-label" for="cat2">Moda sport</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input categoria-checkbox" type="checkbox" value="Moda casual" id="cat3" name="categorias[]">
+                      <label class="form-check-label" for="cat3">Moda casual</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input categoria-checkbox" type="checkbox" value="Moda de alta costura" id="cat4" name="categorias[]">
+                      <label class="form-check-label" for="cat4">Moda de alta costura</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input categoria-checkbox" type="checkbox" value="Zapatos" id="cat5" name="categorias[]">
+                      <label class="form-check-label" for="cat5">Zapatos</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input categoria-checkbox" type="checkbox" value="Accesorios" id="cat6" name="categorias[]">
+                      <label class="form-check-label" for="cat6">Accesorios</label>
+                    </div>
+                  </div>
+                  <small class="form-text text-muted">Puedes elegir hasta 3 categorías.</small>
+                </div>
+                
+              </div>
+            </div>
+
+            <!-- Botón de Envío -->
+            <div class="text-center mt-4">
+              <button type="submit" class="btn btn-success px-4">Guardar Producto</button>
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg"> <!-- Más ancho -->
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Nuevo Producto</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">X</button>
+        </div>
+
+        <div class="modal-body">
+          <form id="formProducto" enctype="multipart/form-data">
+            <div class="row">
+
+              <!-- 🖼 Columna Izquierda: Imágenes -->
+              <div class="col-md-6">
+                <h5>Imágenes</h5>
+                <div class="form-group mb-3">
+                  <label for="imagenesProducto">Subir Imágenes (máx. 3):</label>
+                  <input type="file" class="form-control" id="imagenesProducto" name="imagenes[]" accept="image/*"
+                    multiple required>
+                </div>
+                <div id="previewContainer" class="d-flex flex-wrap gap-2 border p-2 rounded">
+                  <!-- Aquí se mostrarán las vistas previas -->
+                </div>
+              </div>
+
+              <!-- ✏️ Columna Derecha: Información del Producto -->
+              <div class="col-md-6">
+                <h5>Información</h5>
+                <div class="form-group mb-3">
+                  <label for="nombreProducto">Nombre:</label>
+                  <input type="text" class="form-control" id="nombreProducto" name="nombre" required>
+                </div>
+
+                <div class="form-group mb-3">
+                  <label for="descripcionProducto">Descripción:</label>
+                  <textarea class="form-control" id="descripcionProducto" name="descripcion" rows="3"
+                    required></textarea>
+                </div>
+
+                <div class="form-group mb-3">
+                  <label for="precioProducto">Precio:</label>
+                  <input type="number" class="form-control" id="precioProducto" name="precio" required>
+                </div>
+
+                <!-- Aquí puedes agregar más campos como categoría, estado, etc. -->
+              </div>
+            </div>
+
+            <!-- Botón de Envío -->
+            <div class="text-center mt-4">
+              <button type="submit" class="btn btn-success px-4">Guardar Producto</button>
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Editar Producto -->
+  <div class="modal fade" id="modalEditarProducto" tabindex="-1" aria-labelledby="modalEditarProductoLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="modalEditarProductoLabel">Editar Producto</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar">X</button>
+        </div>
+
+        <div class="modal-body">
+          <form id="formEditarProducto" enctype="multipart/form-data">
+            <div class="row">
+
+              <!-- 🖼 Columna Izquierda: Imágenes -->
+              <div class="col-md-6">
+                <h5>Imágenes</h5>
+                <div class="form-group mb-3">
+                  <label for="editarImagenesProducto">Subir Nuevas Imágenes (máx. 3):</label>
+                  <input type="file" class="form-control" id="editarImagenesProducto" name="imagenes[]" accept="image/*"
+                    multiple>
+                </div>
+                <div id="editarPreviewContainer" class="d-flex flex-wrap gap-2 border p-2 rounded">
+                  <!-- Aquí se mostrarán las vistas previas existentes -->
+                </div>
+              </div>
+
+              <!-- ✏️ Columna Derecha: Información del Producto -->
+              <div class="col-md-6">
+                <h5>Información</h5>
+
+                <input type="hidden" id="editarIdProducto" name="id_producto">
+
+                <div class="form-group mb-3">
+                  <label for="editarNombreProducto">Nombre:</label>
+                  <input type="text" class="form-control" id="editarNombreProducto" name="nombre" required>
+                </div>
+
+                <div class="form-group mb-3">
+                  <label for="editarDescripcionProducto">Descripción:</label>
+                  <textarea class="form-control" id="editarDescripcionProducto" name="descripcion" rows="3"
+                    required></textarea>
+                </div>
+
+                <div class="form-group mb-3">
+                  <label for="editarPrecioProducto">Precio:</label>
+                  <input type="number" class="form-control" id="editarPrecioProducto" name="precio" required>
+                </div>
+
+                <!-- Categorías -->
+                <div class="form-group mb-3">
+                  <label>Categorías (máx. 3):</label>
+                  <div id="checkboxCategorias" class="d-flex flex-wrap gap-2">
+                    <div class="form-check">
+                      <input class="form-check-input categoria-checkbox" type="checkbox" value="Moda deportiva" id="cat1" name="categorias[]">
+                      <label class="form-check-label" for="cat1">Moda deportiva</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input categoria-checkbox" type="checkbox" value="Moda sport" id="cat2" name="categorias[]">
+                      <label class="form-check-label" for="cat2">Moda sport</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input categoria-checkbox" type="checkbox" value="Moda casual" id="cat3" name="categorias[]">
+                      <label class="form-check-label" for="cat3">Moda casual</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input categoria-checkbox" type="checkbox" value="Moda de alta costura" id="cat4" name="categorias[]">
+                      <label class="form-check-label" for="cat4">Moda de alta costura</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input categoria-checkbox" type="checkbox" value="Zapatos" id="cat5" name="categorias[]">
+                      <label class="form-check-label" for="cat5">Zapatos</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input categoria-checkbox" type="checkbox" value="Accesorios" id="cat6" name="categorias[]">
+                      <label class="form-check-label" for="cat6">Accesorios</label>
+                    </div>
+                  </div>
+                  <small class="form-text text-muted">Puedes elegir hasta 3 categorías.</small>
+                </div>
+
+              </div>
+            </div>
+            
+            <div class="text-center mt-4">
+              <button type="submit" class="btn btn-primary px-4">Guardar Cambios</button>
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Scripts de Bootstrap y jQuery -->
+  <script src="../../Api/gestion_productos.js"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="../../Api/cerrar.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+    crossorigin="anonymous"></script>
+  <script>
+
+
+    document.querySelectorAll('.categoria-checkbox').forEach(function (checkbox) {
+      checkbox.addEventListener('change', function () {
+        const checked = document.querySelectorAll('.categoria-checkbox:checked');
+        if (checked.length > 3) {
+          this.checked = false;
+          alert('Solo puedes seleccionar hasta 3 categorías.');
+        }
+      });
+    });
+
+    
+    document.addEventListener("DOMContentLoaded", function () {
+      const btnAgregar = document.getElementById("agregarCategoria");
+      const container = document.getElementById("categoriasContainer");
+
+      btnAgregar.addEventListener("click", () => {
+        const currentInputs = container.querySelectorAll(".categoria-input").length;
+
+        if (currentInputs < 3) {
+          const div = document.createElement("div");
+          div.classList.add("input-group", "mb-2");
+          div.innerHTML = `
+            <input type="text" class="form-control categoria-input" name="categorias[]" placeholder="Nueva categoría">
+            <button type="button" class="btn btn-outline-secondary eliminarCategoria">✕</button>
+          `;
+          container.appendChild(div);
+        }
+      });
+
+      // Eliminar categoría individual
+      container.addEventListener("click", (e) => {
+        if (e.target.classList.contains("eliminarCategoria")) {
+          e.target.parentElement.remove();
+        }
+      });
+    });
+
+    document.getElementById("input-buscar").addEventListener("input", function () {
+      document.getElementById("button-buscar").click();
+    });
+
+    document.getElementById("button-buscar").addEventListener("click", function () {
+      const textoBusqueda = document.getElementById("input-buscar").value.toLowerCase();
+      const cards = document.querySelectorAll("#contenedor-productos .card");
+    
+      cards.forEach(card => {
+        const titulo = card.querySelector(".card-title").textContent.toLowerCase();
+        const descripcion = card.querySelector(".card-text").textContent.toLowerCase();
+        
+        if (titulo.includes(textoBusqueda) || descripcion.includes(textoBusqueda)) {
+          card.parentElement.style.display = "block"; // muestra la tarjeta
+        } else {
+          card.parentElement.style.display = "none"; // oculta la tarjeta
+        }
+      });
+    });
+
+  </script>
+
+
+
+
+
+</body>
+
+</html>

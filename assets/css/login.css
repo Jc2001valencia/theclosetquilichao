@@ -1,0 +1,62 @@
+body {
+  background-color: #f8f9fa;
+}
+
+.card {
+  border-radius: 10px;
+  border: none;
+}
+
+/* Contenedor de los inputs con íconos */
+.input-group {
+  border-bottom: 2px solid #ccc;
+  align-items: center;
+  padding-bottom: 5px;
+  margin-bottom: 20px;
+}
+
+.input-group .input-group-text {
+  background: none;
+  border: none;
+  color: #888;
+  font-size: 1.2rem;
+}
+
+/* Input sin bordes y sin fondo */
+.input-group input {
+  border: none;
+  outline: none;
+  box-shadow: none;
+  background-color: transparent;
+  width: 100%;
+  padding: 8px;
+}
+
+/* Efecto al enfocar */
+.input-group:focus-within {
+  border-bottom: 2px solid #ff3b63;
+}
+
+/* Botón principal */
+.btn-primary {
+  background-color: #ff3b63;
+  border-color: #ff3b63;
+  border-radius: 8px;
+  font-weight: bold;
+}
+
+.btn-primary:hover {
+  background-color: #e62e55;
+  border-color: #e62e55;
+}
+
+/* Enlaces */
+.text-center a {
+  color: #ff3b63;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.text-center a:hover {
+  text-decoration: underline;
+}

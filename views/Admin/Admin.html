@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Usuarios</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="flex">
+    <!-- Menú Lateral -->
+    <aside class="w-64 bg-gray-900 h-screen text-white p-4">
+        <h2 class="text-xl font-bold mb-4">Admin Panel</h2>
+        <ul>
+            <li class="mb-2"><a href="admin_categoria.html" class="block py-2 px-4 hover:bg-gray-700">Categoría</a></li>
+            <li class="mb-2"><a href="admin_estado.html" class="block py-2 px-4 hover:bg-gray-700">Estado</a></li>
+            <li class="mb-2"><a href="admin_producto.html" class="block py-2 px-4 hover:bg-gray-700">Producto</a></li>
+            <li class="mb-2"><a href="admin_rol.html" class="block py-2 px-4 hover:bg-gray-700">Rol</a></li>
+            <li class="mb-2"><a href="admin_ubicacion.html" class="block py-2 px-4 hover:bg-gray-700">Ubicación</a></li>
+            <li class="mb-2"><a href="admin_usuario.html" class="block py-2 px-4 hover:bg-gray-700">Usuarios</a></li>
+            <li class="mb-2"><a href="admin_vendedor.html" class="block py-2 px-4 hover:bg-gray-700">Vendedores</a></li>
+        </ul>
+        <button onclick="mostrarModalCerrar()" class="mt-4 bg-red-600 w-full text-white py-2 rounded">Cerrar Sesión</button>
+    </aside>
+
+    <!-- Contenido Principal -->
+    <main class="flex-1 p-6 bg-gray-100">
+        <h1 class="text-2xl font-bold mb-4">Dashboard de Usuarios</h1>
+        <div class="grid grid-cols-3 gap-4 mb-6">
+            <div class="bg-white p-4 shadow rounded-lg text-center">
+                <h2 class="text-lg font-semibold">Usuarios Registrados</h2>
+                <p class="text-2xl font-bold" id="totalUsuarios">0</p>
+            </div>
+            <div class="bg-white p-4 shadow rounded-lg text-center">
+                <h2 class="text-lg font-semibold">Productos Registrados</h2>
+                <p class="text-2xl font-bold" id="totalProductos">0</p>
+            </div>
+            <div class="bg-white p-4 shadow rounded-lg text-center">
+                <h2 class="text-lg font-semibold">Interacciones</h2>
+                <p class="text-2xl font-bold" id="totalInteracciones">0</p>
+            </div>
+        </div>
+        
+        <div class="grid grid-cols-2 gap-4">
+            <div class="bg-white p-4 shadow rounded-lg">
+                <canvas id="graficoUsuarios" class="w-full h-48"></canvas>
+            </div>
+            <div class="bg-white p-4 shadow rounded-lg">
+                <canvas id="graficoProductos" class="w-full h-48"></canvas>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Simulación de datos dinámicos
+        document.getElementById("totalUsuarios").textContent = "150";
+        document.getElementById("totalProductos").textContent = "320";
+        document.getElementById("totalInteracciones").textContent = "5000";
+        
+        // Gráfico de Usuarios Registrados
+        var ctxUsuarios = document.getElementById('graficoUsuarios').getContext('2d');
+        var chartUsuarios = new Chart(ctxUsuarios, {
+            type: 'bar',
+            data: {
+                labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio'],
+                datasets: [{
+                    label: 'Usuarios Registrados',
+                    data: [10, 25, 40, 60, 80, 150],
+                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+        
+        // Gráfico de Productos Registrados
+        var ctxProductos = document.getElementById('graficoProductos').getContext('2d');
+        var chartProductos = new Chart(ctxProductos, {
+            type: 'line',
+            data: {
+                labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio'],
+                datasets: [{
+                    label: 'Productos Registrados',
+                    data: [5, 15, 30, 50, 90, 320],
+                    backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 2,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
