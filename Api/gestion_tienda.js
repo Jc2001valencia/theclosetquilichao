@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Petición al backend para listar todos los vendedores
-    fetch("http://localhost/microservicio_autenticacion/", {
+    fetch("https://apiusuario-production-85d7.up.railway.app/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ action: "listar_vendedores" }),
@@ -96,7 +96,7 @@ document.getElementById("formEditarPerfil").addEventListener("submit", function 
     console.log("Datos que se enviarán al servidor:", datosActualizar);
 
     // Enviar la actualización al backend vía POST
-    fetch("http://localhost/microservicio_autenticacion/", {
+    fetch("https://apiusuario-production-85d7.up.railway.app/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(datosActualizar),

@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   let productos;
   try {
     const res = await fetch(
-      `http://localhost/microservicio_producto/routes/api.php?action=listarPorVendedor&id_vendedor=${idVendedor}`
+      `https://apiproductos-production.up.railway.app/routes/api.php?action=listarPorVendedor&id_vendedor=${idVendedor}`
     );
     productos = await res.json();
   } catch (err) {

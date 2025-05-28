@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function obtenerProducto(id) {
-    const apiUrl = `http://localhost/microservicio_producto/routes/api.php?action=obtener&id_producto=${id}`;
+    const apiUrl = `https://apiproductos-production.up.railway.app/api.php?action=obtener&id_producto=${id}`;
 
     fetch(apiUrl)
         .then(response => response.json())
@@ -54,7 +54,7 @@ function actualizarEnlaceWhatsApp(producto) {
 
     // Tomamos la primera imagen
     const imagenPrincipal = producto.imagenes && producto.imagenes.length > 0
-        ? `https://tusitio.com/assets/img/${producto.imagenes[0]}`  // Reemplaza por tu dominio si es necesario
+        ? `https://theclosetquilichao-production.up.railway.app/assets/img/${producto.imagenes[0]}`  // Reemplaza por tu dominio si es necesario
         : "No disponible";
 
     // Creamos un mensaje más completo

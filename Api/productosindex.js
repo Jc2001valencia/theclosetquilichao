@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", async () => {
-    const apiUrl = "http://localhost/microservicio_producto/routes/api.php?action=listar";
+    const apiUrl = "https://apiproductos-production.up.railway.app/routes/api.php?action=listar";
     const container = document.getElementById("productos-container");
 
     try {

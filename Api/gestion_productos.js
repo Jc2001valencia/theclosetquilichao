@@ -38,7 +38,7 @@ document
 
     // 1. Obtener el ID del vendedor con el userId
     const vendedorRes = await fetch(
-      `http://localhost/microservicio_producto/routes/api.php?action=obtenerIdVendedor&id_usu=${userId}`
+      `https://apiproductos-production.up.railway.app/routes/api.php?action=obtenerIdVendedor&id_usu=${userId}`
     );
     const vendedorData = await vendedorRes.json();
 
@@ -53,7 +53,7 @@ document
 
     // 3. Enviar al microservicio de productos
     fetch(
-      "http://localhost/microservicio_producto/routes/api.php?action=crear",
+      "https://apiproductos-production.up.railway.app/routes/api.php?action=crear",
       {
         method: "POST",
         body: formData,
@@ -86,7 +86,7 @@ document
     try {
       // 1. Obtener el ID del vendedor a partir del ID del usuario
       const vendedorRes = await fetch(
-        `http://localhost/microservicio_producto/routes/api.php?action=obtenerIdVendedor&id_usu=${userId}`
+        `https://apiproductos-production.up.railway.app/routes/api.php?action=obtenerIdVendedor&id_usu=${userId}`
       );
       const vendedorData = await vendedorRes.json();
 
@@ -101,7 +101,7 @@ document
 
       // 3. Enviar los datos al microservicio de productos
       const response = await fetch(
-        "http://localhost/microservicio_producto/routes/api.php?action=crear",
+        "hhttps://apiproductos-production.up.railway.app/routes/api.php?action=crear",
         {
           method: "POST",
           body: formData,
@@ -133,7 +133,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   try {
     const response = await fetch(
-      `http://localhost/microservicio_producto/routes/api.php?action=obtenerIdVendedor&id_usu=${encodeURIComponent(userId)}`
+      `https://apiproductos-production.up.railway.app/routes/api.php?action=obtenerIdVendedor&id_usu=${encodeURIComponent(userId)}`
     );
 
     const data = await response.json();
@@ -165,7 +165,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   try {
     const resVendedor = await fetch(
-      `http://localhost/microservicio_producto/routes/api.php?action=obtenerIdVendedor&id_usu=${encodeURIComponent(userId)}`
+      `https://apiproductos-production.up.railway.app/routes/api.php?action=obtenerIdVendedor&id_usu=${encodeURIComponent(userId)}`
     );
     const dataVendedor = await resVendedor.json();
 
@@ -176,7 +176,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     const id_vendedor = dataVendedor.id_vendedor;
 
     const resProductos = await fetch(
-      `http://localhost/microservicio_producto/routes/api.php?action=listarPorVendedor&id_vendedor=${id_vendedor}`
+      `https://apiproductos-production.up.railway.app/routes/api.php?action=listarPorVendedor&id_vendedor=${id_vendedor}`
     );
     const productos = await resProductos.json();
 
@@ -290,7 +290,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             console.log("Datos enviados al servidor:", JSON.stringify(requestData));
     
             // Hacer la solicitud DELETE a la URL correcta
-            const res = await fetch(`http://localhost/microservicio_producto/routes/api.php?action=eliminarConTodo`, {
+            const res = await fetch(`hhttps://apiproductos-production.up.railway.app/routes/api.php?action=eliminarConTodo`, {
               method: "DELETE",
               headers: {
                 "Content-Type": "application/json"
@@ -339,7 +339,7 @@ document.addEventListener("click", async function (event) {
       const confirmar = confirm("¿Estás seguro de marcar este producto como vendido?");
       if (!confirmar) return;
     
-      const response = await fetch(`http://localhost/microservicio_producto/routes/api.php?action=productoVendido&id_producto=${idProducto}`);
+      const response = await fetch(`https://apiproductos-production.up.railway.app/api.php?action=productoVendido&id_producto=${idProducto}`);
       
       // Verificar si la respuesta es exitosa
       if (!response.ok) {
@@ -440,7 +440,7 @@ async function handleFormSubmit(e) {
   console.log("Payload a enviar:", JSON.stringify(payload, null, 2));
 
   try {
-    const response = await fetch("http://localhost/microservicio_producto/routes/api.php?action=crearTodo", {
+    const response = await fetch("https://apiproductos-production.up.railway.app/routes/api.php?action=crearTodo", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload)
@@ -550,7 +550,7 @@ async function handleEditarProducto(e) {
   console.log("📦 Payload a enviar:", JSON.stringify(payload, null, 2));
 
   try {
-    const response = await fetch(`http://localhost/microservicio_producto/routes/api.php?action=editarProductoConTodo&id_producto=${id_producto}`, {
+    const response = await fetch(`https://apiproductos-production.up.railway.app/routes/api.php?action=editarProductoConTodo&id_producto=${id_producto}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload)

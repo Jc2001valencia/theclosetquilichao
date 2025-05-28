@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log("📤 Enviando datos:", { id_usu, nombre, tipoVendedor, telefono, ubicacion, imagen });
 
         try {
-            let response = await fetch("http://localhost/microservicio_autenticacion/", { 
+            let response = await fetch("https://apiusuario-production-85d7.up.railway.app/", { 
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({

@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const password = document.getElementById("password").value;
 
         try {
-            const response = await fetch("http://localhost/microservicio_autenticacion/", {
+            const response = await fetch("https://apiusuario-production-85d7.up.railway.app/", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -88,7 +88,7 @@ document.addEventListener("DOMContentLoaded", function () {
             console.log(`Validando código: ${authCode} para usuario: ${userId}`);
 
             try {
-                const response = await fetch("http://localhost/microservicio_autenticacion/", {
+                const response = await fetch("https://apiusuario-production-85d7.up.railway.app/", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
@@ -138,7 +138,7 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log(`🔹 Enviando registro para: ${email}`);
 
         try {
-            const response = await fetch("http://localhost/microservicio_autenticacion/", {
+            const response = await fetch("https://apiusuario-production-85d7.up.railway.app/", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
