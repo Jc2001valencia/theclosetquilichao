@@ -151,7 +151,7 @@ function actualizarVendedor(producto) {
     `;
 
     // Configura el enlace de WhatsApp
-    document.getElementById("whatsapp-link").href = `https://api.whatsapp.com/send?phone=${telefonoVendedor}&text=${mensaje}`;
+    document.getElementById("whatsapp-link").href = `https://api.whatsapp.com/send?phone=${telefonoVendedor}&text="Hola Quiero hacer una compra o me interesa tus productos"`;
 }
 
 

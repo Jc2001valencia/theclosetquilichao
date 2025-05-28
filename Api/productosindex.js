@@ -12,7 +12,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             // Carousel ID único para cada producto
             const carouselId = `carousel-${index}`;
-
             const imagenes = producto.imagenes?.length > 0 ? producto.imagenes : ["placeholder.png"];
 
             const carouselItems = imagenes.map((img, i) => `
@@ -21,18 +20,24 @@ document.addEventListener("DOMContentLoaded", async () => {
                 </div>
             `).join("");
 
+            // Si está agotado
+            const isAgotado = producto.id_estado === 2;
+            const cardOpacity = isAgotado ? 'opacity: 0.5; pointer-events: none;' : '';
+            const nombreProducto = isAgotado ? `${producto.nombre} (AGOTADO)` : producto.nombre;
+
             card.innerHTML = `
-                <div class="card h-100 border-0 shadow-sm text-center product-card" style="cursor:pointer;" data-id="${producto.id_producto}">
+                <div class="card h-100 border-0 shadow-sm text-center product-card" 
+                    style="cursor: ${isAgotado ? 'not-allowed' : 'pointer'}; ${cardOpacity}" 
+                    data-id="${producto.id_producto}">
+                    
                     <div id="${carouselId}" class="carousel slide" data-bs-ride="carousel">
                         <div class="carousel-inner">
                             ${carouselItems}
                         </div>
-                        ${imagenes.length > 1 ? `
-                       ` : ''}
                     </div>
 
                     <div class="card-body">
-                        <h5 class="card-title text-dark mb-1">${producto.nombre}</h5>
+                        <h5 class="card-title text-dark mb-1">${nombreProducto}</h5>
                         <p class="text-muted small">M/L/XL</p>
                         <div class="mb-2">
                             <i class="fa fa-star text-warning"></i>
@@ -46,10 +51,12 @@ document.addEventListener("DOMContentLoaded", async () => {
                 </div>
             `;
 
-            // Evento de clic en la tarjeta
-            card.querySelector(".product-card").addEventListener("click", function () {
-                window.location.href = `../views/Products/producto.html?id=${producto.id_producto}`;
-            });
+            // Solo agregar evento de clic si el producto está disponible
+            if (!isAgotado) {
+                card.querySelector(".product-card").addEventListener("click", function () {
+                    window.location.href = `../views/Products/producto.html?id=${producto.id_producto}`;
+                });
+            }
 
             container.appendChild(card);
         });

@@ -494,74 +494,115 @@ async function handleFormSubmit(e) {
   }
 }
 
+
+
+
+
 // editar 
-document.getElementById("formEditarProducto").addEventListener("submit", async function (e) {
+const formEditar = document.getElementById("formEditarProducto");
+formEditar.removeEventListener("submit", handleEditarProducto); // Evita listeners duplicados
+formEditar.addEventListener("submit", handleEditarProducto);
+
+async function handleEditarProducto(e) {
   e.preventDefault();
 
-  const id = document.getElementById("editarIdProducto").value;
+  const id_producto = document.getElementById("editarIdProducto").value;
+  const id_vendedor = localStorage.getItem("id_vendedor");
 
-  // Obtener id_vendedor desde localStorage
-  const idVendedor = parseInt(localStorage.getItem("id_vendedor"));
-  if (!idVendedor) {
-    alert("Error: No se encontró el ID del vendedor en localStorage.");
+  if (!id_producto || !id_vendedor) {
+    alert("❌ Faltan datos para editar el producto.");
     return;
   }
 
-  // Producto
-  const producto = {
-    nombre: document.getElementById("editarNombreProducto").value,
-    descripcion: document.getElementById("editarDescripcionProducto").value,
-    precio: parseFloat(document.getElementById("editarPrecioProducto").value),
-    id_estado: 1,
-    id_vendedor: idVendedor
-  };
+  const nombre = document.getElementById("editarNombreProducto").value.trim();
+  const descripcion = document.getElementById("editarDescripcionProducto").value.trim();
+  const precio = parseFloat(document.getElementById("editarPrecioProducto").value);
+  const id_estado = 1;
 
-  // Categorías
-  const categoriaInputs = document.querySelectorAll("#editarCategoriasContainer .categoria-input");
+  // Obtener categorías seleccionadas y garantizar 3 campos (null si no hay)
+  const checkedCategorias = document.querySelectorAll("#editarCategoriasContainer .categoria-checkbox:checked");
   const categoria = {
-    categoria1: categoriaInputs[0]?.value || "",
-    categoria2: categoriaInputs[1]?.value || "",
-    categoria3: categoriaInputs[2]?.value || ""
+    categoria1: checkedCategorias[0]?.value.trim() || null,
+    categoria2: checkedCategorias[1]?.value.trim() || null,
+    categoria3: checkedCategorias[2]?.value.trim() || null,
   };
 
-  // Imágenes
-  const archivos = document.getElementById("editarImagenesProducto").files;
-  const imagenes = {};
+  // Obtener imágenes seleccionadas (nuevas), siempre enviar 3 campos (null si no hay)
+  const imagenesInput = document.getElementById("editarImagenesProducto").files;
+  const imagenes = {
+    imagen1: imagenesInput[0]?.name || null,
+    imagen2: imagenesInput[1]?.name || null,
+    imagen3: imagenesInput[2]?.name || null,
+  };
 
-  for (let i = 0; i < archivos.length && i < 3; i++) {
-    const nombre = archivos[i].name;
-    imagenes[`imagen${i + 1}`] = nombre; // corregido uso de template string
-  }
-
-  // Construir JSON final
   const payload = {
-    producto,
+    producto: {
+      nombre,
+      descripcion,
+      precio,
+      id_estado,
+      id_vendedor: parseInt(id_vendedor)
+    },
     categoria,
     imagenes
   };
 
+  console.log("📦 Payload a enviar:", JSON.stringify(payload, null, 2));
+
   try {
-    const response = await fetch(`http://localhost/microservicio_producto/routes/api.php?action=editarProductoConTodo&id_producto=${id}`, {
+    const response = await fetch(`http://localhost/microservicio_producto/routes/api.php?action=editarProductoConTodo&id_producto=${id_producto}`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload)
     });
 
-    const data = await response.json();
-    if (response.ok) {
-      alert(data.mensaje || "Producto actualizado correctamente");
+    const text = await response.text();
+    console.log("📩 Respuesta cruda:", text);
 
-      const modal = bootstrap.Modal.getInstance(document.getElementById("modalEditarProducto"));
-      modal.hide();
-      location.reload();
-    } else {
-      alert("Error al actualizar el producto: " + (data.mensaje || ""));
+    try {
+      const data = JSON.parse(text);
+
+      if (response.ok) {
+        alert(data.mensaje || "✅ Producto actualizado correctamente");
+
+        // Subir imágenes solo si hay archivos nuevos
+        if (imagenesInput.length > 0) {
+          const formData = new FormData();
+          for (let i = 0; i < imagenesInput.length && i < 3; i++) {
+            formData.append("imagenes", imagenesInput[i]);
+          }
+
+          try {
+            const uploadResponse = await fetch("http://localhost:3000/api/upload-images", {
+              method: "POST",
+              body: formData
+            });
+
+            const uploadData = await uploadResponse.json();
+            if (uploadResponse.ok) {
+              console.log("🖼️ Imágenes actualizadas correctamente");
+            } else {
+              console.error("❌ Error al subir imágenes:", uploadData);
+            }
+          } catch (error) {
+            console.error("⚠️ Error en servidor de imágenes:", error);
+          }
+        }
+
+        const modal = bootstrap.Modal.getInstance(document.getElementById("modalEditarProducto"));
+        modal.hide();
+        setTimeout(() => location.reload(), 1000);
+
+      } else {
+        alert("❌ Error al actualizar: " + (data.mensaje || "Error desconocido"));
+      }
+    } catch (error) {
+      console.error("⚠️ Respuesta no JSON:", text);
+      alert("⚠️ El servidor no devolvió una respuesta válida.");
     }
-  } catch (error) {
-    console.error("Error en la solicitud:", error);
-    alert("Error al conectar con el servidor.");
-  }
-});
 
+  } catch (error) {
+    console.error("❌ Error de conexión:", error);
+    alert("❌ No se pudo conectar con el servidor.");
+  }
+}
